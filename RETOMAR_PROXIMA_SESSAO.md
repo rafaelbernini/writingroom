@@ -1,5 +1,41 @@
 # WritingRoom — retomar na próxima sessão
 
+## Ponto de retomada prioritário — documentação e GitHub (2026-11-04)
+
+Último pedido atendido: preparar este documento de continuidade e um README de apresentação pública. O README agora apresenta propósito, recursos reais, instalação, dados, limites, testes e contribuição. O conteúdo anterior foi preservado em `docs/development/HISTORICO_README.md`.
+
+### Publicação pendente
+
+O destino já existe: **https://github.com/rafaelbernini/writingroom.git**, branch `main`. Na última consulta, o remoto tinha apenas `2f05c2f0ae227a51f1a1d072cb10230597400dd9` (commit inicial com licença MIT). O projeto local usa Apache-2.0 em `LICENSE` e `package.json`; o commit preparado publica essa licença local também.
+
+O diretório `.git` deste workspace é um placeholder protegido e não funciona como repositório Git. Para preservar o histórico remoto, foi criado um clone de publicação em `/tmp/writingroom-publicacao`. Não tente remover ou substituir o `.git` protegido.
+
+- Commit preparado: `b876407f19243dbe9cfecda258a6c972e74915a3`, com o código alpha.20 e a documentação anterior a esta atualização.
+- Bundle de contingência: `/tmp/writingroom-publicacao.bundle`.
+- **Nenhum push foi concluído.** HTTPS retornou `Invalid username or token`; SSH retornou `Permission denied (publickey)`. Também foi tentado `--force-with-lease`, com a mesma recusa de autenticação. O problema não é o endereço nem a existência do repositório.
+- O usuário autorizou publicar no repositório existente, inclusive solicitou force. Preserve o histórico e confira o remoto antes de enviar; o commit preparado já descende do commit inicial, portanto não precisa sobrescrever histórico.
+- Os caminhos em `/tmp` são temporários e podem não existir na próxima sessão. Não são cópias permanentes nem prova de publicação.
+
+### Como concluir o envio
+
+1. Verifique se `/tmp/writingroom-publicacao` ainda existe. Se necessário, clone novamente o destino em um diretório gravável separado, preservando o histórico remoto.
+2. Copie o README atual, este documento, `docs/development/HISTORICO_README.md` e `.gitignore` do workspace para o clone preparado. Revise o diff e faça um novo commit: essas atualizações ainda não estão em `b876407` nem no bundle anterior.
+3. Se precisar reconstruir a cópia pública, inclua apenas código, documentação, manifests e licença. Exclua manuscritos, manual privado, `writingroom-private/`, `writingroom-projects/`, `writingroom-backups/`, `node_modules/`, bundles gerados, `.env*`, `.aws/`, `.agents/` e `.codex/`. Não copie o `.git` do workspace.
+4. Verifique a autenticação GitHub com acesso de escrita, sem solicitar tokens pelo chat ou expô-los em logs. Uma nova tentativa só resolverá se a credencial ou o acesso tiver mudado.
+5. Confira o estado remoto e execute o push para `main`. Confirme por `git ls-remote` que a branch remota corresponde ao commit enviado antes de declarar a publicação concluída.
+
+### Validação disponível
+
+Na preparação da publicação, a suíte foi reexecutada com Node.js 26.13.0: **390 testes aprovados, zero falhas/skips**. Log temporário: `/tmp/writingroom-publicacao-tests-tap.log`. A primeira tentativa no sandbox restrito falhou; a execução com suporte aos sockets locais passou. As mudanças de README/retomada são apenas documentação e não repetem essa validação de código.
+
+### Próxima fase de implementação após resolver a publicação
+
+A última fase técnica concluída é a **ADR-0038**, recuperação testemunhada em fixture HTTPS/OIDC de uma identidade, com 52 verificações Firefox específicas. Próximo objetivo: contrato e prova sintética de isolamento de confiança por `subject` para múltiplas contas/dispositivos, garantindo que recuperar uma identidade não redefina as demais.
+
+Leia `docs/development/CODEX_CONTINUATION_MASTER.md`, `docs/development/NEXT_SESSION.md`, `docs/development/PROGRESS.md`, ADRs 0037/0038 e os módulos/testes de recuperação antes de implementar. Preserve a UI alpha.20/studio-19 e o conteúdo privado. As seções abaixo são histórico: seus campos “Próximo” antigos não substituem este ponto de retomada.
+
+---
+
 ## Preparação online — recuperação testemunhada no HTTPS/Firefox (2026-11-04)
 
 **390 testes Node aprovados, sem falhas/skips**, incluindo **7 novos de integração HTTPS**, e **52 verificações Firefox novas de recuperação**. Node `/tmp/writingroom-recovery-https-final-node.log`; isolado `/tmp/writingroom-recovery-https-isolated-node.log`; browser `/tmp/writingroom-browser-k9j45auj/report.json`. As 118 verificações Firefox anteriores não foram reexecutadas nesta etapa; a suíte nova é dedicada à recuperação.
