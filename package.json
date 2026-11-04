@@ -1,0 +1,37 @@
+{
+  "name": "writingroom",
+  "private": true,
+  "version": "0.1.0-alpha.20",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch apps/web/server.mjs",
+    "test": "node --test packages/core/test/*.test.mjs",
+    "demo": "node packages/core/src/cli.mjs demo",
+    "cli": "node packages/core/src/cli.mjs",
+    "storage:demo": "node packages/storage-spike/src/demo.mjs",
+    "start": "node apps/web/server.mjs",
+    "build:editor": "node scripts/build-editor.mjs",
+    "predev": "npm run build:editor",
+    "prestart": "npm run build:editor"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prosemirror-commands": "1.7.2",
+    "prosemirror-history": "1.5.1",
+    "prosemirror-keymap": "1.2.3",
+    "prosemirror-model": "1.25.12",
+    "prosemirror-schema-basic": "1.2.5",
+    "prosemirror-schema-list": "1.6.0",
+    "prosemirror-state": "1.4.4",
+    "prosemirror-transform": "1.12.4",
+    "prosemirror-view": "1.42.9"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "hpke": "1.1.8",
+    "jose": "6.2.15"
+  }
+}

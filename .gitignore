@@ -1,0 +1,27 @@
+node_modules/
+dist/
+*.log
+writingroom-projects/
+.DS_Store
+.env
+
+# Referência privada do usuário; não redistribuir o manual.
+/Scrivener_Manual-Win.pdf
+
+__pycache__/
+*.pyc
+
+/apps/web/editor.bundle.js
+/apps/web/editor-licenses.txt
+
+/writingroom-backups/
+
+# Manuscrito e modelos privados autorizados pelo autor; não redistribuir.
+/O Grito no Marmore - Rascunho1 - Rafael S Bernini.docx
+/writingroom-private/
+
+# Credenciais e configurações locais do ambiente.
+.env.*
+/.aws/
+/.codex/
+/.agents/

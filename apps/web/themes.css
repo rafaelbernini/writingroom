@@ -1,0 +1,46 @@
+/* Original interpretations. No remote assets, logos, or proprietary theme files. */
+body[data-appearance]{font-family:var(--ui-font);accent-color:var(--accent)}
+body[data-appearance] :is(button,input,textarea,select,.action-menu>summary){border-radius:var(--control-radius)}
+body[data-appearance] :is(h1,h2){font-family:var(--heading-font);letter-spacing:-.5px}
+body[data-appearance] :is(.top,.room-bar){background:var(--header-bg);color:var(--header-ink)}
+body[data-appearance] .top :is(.symbol,.alpha,.project-name,.top-actions>span){color:inherit}
+body[data-appearance] .room-bar{background:var(--surface);color:var(--ink)}
+body[data-appearance] .primary,body[data-appearance].dark .primary{background:var(--primary-bg);border-color:var(--primary-bg);color:var(--primary-ink)}
+body[data-appearance] .primary:hover{background:var(--primary-bg);filter:brightness(.93)}
+body[data-appearance] :is(.scene-card,.publication,dialog,.action-menu-panel){border-radius:var(--control-radius);box-shadow:var(--theme-shadow)}
+body[data-appearance] :is(#editor,#scratchpad,.reference pre,.manuscript pre,.rich-preview,#richEditor .ProseMirror){font-family:var(--theme-editor-font)}
+body[data-appearance] :is(.notice,.dark .notice){background:var(--panel);color:var(--ink);border-left:4px solid var(--accent)}
+body[data-appearance] :is(.book-cover,.book-tile:nth-child(3n+2) .book-cover,.book-tile:nth-child(3n) .book-cover){background:var(--primary-bg);color:var(--primary-ink);border-radius:var(--control-radius);box-shadow:inset 6px 0 #0002,var(--theme-shadow)}
+body[data-appearance] .book-cover h3{font-family:var(--heading-font)}
+body[data-appearance] .book-tile>.action-menu{color:var(--ink)}
+body[data-appearance] :is(.danger-text,.diff-removed){color:#913d2f}body[data-appearance].dark :is(.danger-text,.diff-removed){color:#ffb7aa}
+body[data-appearance] .review-comment{background:#d7ac3033;border-bottom-color:var(--accent)}
+body[data-appearance] .review-footnote{border-color:var(--accent)}
+body[data-appearance] .pointer-ghost{border-radius:var(--control-radius)}
+body[data-theme-family="Office 365"] .top{border-bottom:3px solid var(--accent)}
+body[data-theme-family="Office 2010"] .room-bar{background:linear-gradient(var(--surface),var(--panel));border-top:1px solid var(--surface)}
+body[data-theme-family="GNOME 50"] .top,body[data-theme-family="macOS"] .top{box-shadow:0 1px 7px #0002}
+body[data-theme-family="Retrô"] :is(button,input,textarea,select,dialog){border:2px outset var(--line)}
+body[data-theme-family="Terminal"] :is(.top,.room-bar,.writing-tools,.statusline){border-color:var(--accent)}
+body[data-theme-family="Terminal"] :is(h1,h2,.editor-top input,.book-cover h3){font-family:var(--ui-font);letter-spacing:0}
+body[data-appearance="playful"] .book-tile:nth-child(3n+2) .book-cover{background:#9b3b11;color:#fff}
+body[data-appearance="playful"] .book-tile:nth-child(3n) .book-cover{background:#005d60;color:#fff}
+body[data-appearance="dos-colors"] .book-tile:nth-child(3n+2) .book-cover{background:#66ffff;color:#101030}
+body[data-appearance="dos-colors"] .book-tile:nth-child(3n) .book-cover{background:#ff99ff;color:#101030}
+#appearanceDialog{width:960px;max-width:95vw}#appearanceDialog>h2{margin-bottom:10px}.appearance-summary{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.appearance-summary strong{color:var(--accent)}
+.theme-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin:20px 0;max-height:48vh;overflow:auto;padding:4px}
+.theme-choice{position:relative;display:flex;flex-direction:column;gap:6px;margin:0;padding:9px;border:1px solid var(--line);border-radius:var(--control-radius);cursor:pointer;background:var(--surface)}
+.theme-choice:has(input:checked){outline:2px solid var(--accent);outline-offset:1px;background:var(--accent-soft)}.theme-choice:focus-within{box-shadow:0 0 0 3px var(--accent)}
+.theme-choice>input{position:absolute;top:14px;right:13px;z-index:1;width:16px;height:16px;margin:0}.theme-name{font:600 11px/1.4 var(--ui-font);padding-top:3px;color:var(--ink)}
+.theme-sample{display:block;height:94px;background:var(--bg);border:1px solid var(--line);color:var(--ink);overflow:hidden;border-radius:var(--control-radius)}
+.theme-sample-top{display:block;padding:5px 8px;background:var(--header-bg);color:var(--header-ink);font:10px/1.4 var(--ui-font)}.theme-sample-content{display:flex;height:70px;gap:7px;padding:7px;background:var(--bg)}.theme-sample-side{width:24%;background:var(--panel);border-right:2px solid var(--accent)}.theme-sample-paper{flex:1;display:block;padding:4px;background:var(--surface);color:var(--ink);font:17px/1.1 var(--theme-editor-font)}.theme-sample-rule{display:block;height:3px;background:var(--muted);margin:5px 0;width:85%;opacity:.6}.theme-sample-rule.short{width:55%}
+.appearance-actions{position:sticky;bottom:-28px;background:var(--surface);padding:14px 0 4px;border-top:1px solid var(--line)}
+@media(max-width:650px){.theme-gallery{grid-template-columns:repeat(2,minmax(0,1fr));max-height:49vh}.theme-choice{padding:6px}#appearanceDialog{padding:20px}.appearance-actions{bottom:-20px}#themeBtn{padding:7px}}
+@media print{
+ body[data-appearance]{--ink:#000!important;--bg:#fff!important;--surface:#fff!important;--muted:#222!important;--accent:#000!important;--accent-soft:#fff!important;--theme-editor-font:Georgia,"Times New Roman",serif!important;--heading-font:Georgia,"Times New Roman",serif!important;background:#fff!important;color:#000!important}
+ body[data-appearance] .publication{box-shadow:none;border:0;background:#fff!important;color:#000!important}#appearanceDialog{display:none!important}
+}
+body[data-appearance] .top button{background:var(--surface);color:var(--ink)}
+#appearanceGallery .theme-choice>input[type=radio]{width:16px;height:16px;padding:0}
+
+body[data-appearance].dark :is(.top-actions button,.sidebuttons button,.editor-actions button,.room-bar>button){background-color:var(--surface);color:var(--ink)}
