@@ -1,5 +1,44 @@
 # Alterações
 
+## Preparação online — retomada do mapa de contas (2026-11-05)
+
+**419 testes Node aprovados, zero falhas/skips**, incluindo **14 novos de mapa/processos**, também aprovados isoladamente. Baseline: 405 aprovados. Node v26.13.0/Linux. Logs `/tmp/writingroom-account-map-baseline.log`, `/tmp/writingroom-map-isolated-final.log` e `/tmp/writingroom-account-map-final.log`. `git diff --check` sem erros. Firefox não reexecutado: as 228 verificações da ADR-0040 são evidência anterior e não cobrem o novo índice.
+
+ADR-0041: `subject-recovery-map.mjs` persiste somente referências públicas de subject/âncora/epoch/fingerprint/domínios/nomes de arquivos. Witnesses e raiz vêm de configuração privada independente do mapa. Resolver escolhe exatamente os domínios confirmados pelo witness e abre o diretório pelo wrapper testemunhado, sem fallback, scan, bootstrap ou escolha por maior epoch. Candidato registrado antes do compromisso permanece inerte; depois do compromisso pode ser encontrado sem persistir ponteiro ativo nem repetir JWT.
+
+Testes reais de processo separado e SIGKILL após compromisso do witness, antes/depois do commit do mapa, com/sem destino preparado. Mapa antigo ou localizador ausente bloqueia a conta afetada e preserva a resolução da outra. Reparação privada confere destinos atuais; mapa substituído pode ser reconstruído em arquivo novo sem apagar evidência ou reescrever witnesses. Adulteração com checksum recalculado, arquivos/âncoras cruzados, checkpoint antigo, symlink/traversal, triggers/schema desconhecido e ausência de arquivos são recusados. Sessão nova exige posse nova; privadas/JWT não são persistidos.
+
+**Próximo: integrar o índice à fixture HTTPS/OIDC retomável**, reabrindo o controlador com somente configuração/referências públicas, sem privadas editoriais/de reconferência antigas para servir login + nova prova de posse. Cobrir queda após compromisso antes do reconhecimento, destinos ausentes/antigos e preservação dos domínios/recibos da outra conta. O índice ainda não está ligado à fixture HTTPS da ADR-0040.
+
+Limites: corrupção/ausência do arquivo compartilhado inteiro pode bloquear todas as contas; não há independência operacional do witness, recuperação de privadas, proteção contra rollback conjunto ou dos eventos de um diário com domínio preservado. Sem E2EE/v4, envio, deploy, dependência nova ou mudança da UI alpha.20/studio-19/formatos/manuscritos. Alterações locais, sem novo push.
+
+
+## Preparação online — recuperação independente no HTTPS/OIDC (2026-11-05)
+
+**Regressão final: 405 testes Node aprovados, zero falhas/skips**, incluindo os oito novos. Log `/tmp/writingroom-subject-https-final-node-2.log`. `git diff --check` sem erros.
+
+ADR-0040: fixture de duas contas, com seleção de diretório/diário pela identidade OIDC verificada e sessão opaca. A recuperação troca somente o harness da conta afetada, preservando origem, servidor e sessões/provas/recibos da outra. Callbacks pendentes e trocas de token em andamento são revalidados por contexto/epoch/geração da conta. Campos de seleção, bindings/respostas HPKE, CSRF e domínios cruzados são recusados. Resultado OIDC de Bob pendente continua disponível uma vez após ativar Alice.
+
+Oito testes Node novos e **58 verificações Firefox novas** aprovados. Baseline reexecutado: **397 testes sem falhas/skips**, Node v26.13.0/Linux, `/tmp/writingroom-multi-https-baseline.log`. Isolado final: `/tmp/writingroom-subject-https-isolated-final.log`. Firefox novo: `/tmp/writingroom-browser-mb4yls86/report.json`. Regressões Firefox reexecutadas e aprovadas: **52 recuperação + 53 OIDC/operações + 38 posse + 27 cookies** (170 anteriores; 228 verificações com as 58 novas). Relatórios `/tmp/writingroom-browser-pr9cg8tp/report.json`, `/tmp/writingroom-browser-_zxluz5i/report.json`, `/tmp/writingroom-browser-4ilwi0ib/report.json` e `/tmp/writingroom-browser-bscnqwj5/report.json`.
+
+Na regressão OIDC, as primeiras execuções oscilaram na injeção de resposta perdida de convite/aceite. A fixture agora mantém a interrupção armada até liberação explícita por pipe, cobrindo retries do transporte; reconciliação/idempotência continuam exigidas. A execução final das 53 verificações passou. Não foram alteradas políticas de autorização ou respostas normais para acomodar o teste.
+
+Mapa conta → âncora/arquivos ainda privado/em memória. Reinício testado reabre bancos e transporte, com controlador/documentos Firefox vivos; não é crash completo nem recuperação de privadas. UI alpha.20/studio-19, formatos autorais e manuscritos preservados. Sem dependência nova, conta real, envio ou deploy. Alterações locais, sem novo push.
+
+**Próximo: contrato e prova sintética de retomada do controlador/mapa após falha**, incluindo compromisso confirmado antes de persistir destino, mapa antigo/substituído e preservação das outras contas. Persistir somente referências públicas conferidas contra o witness; não inferir confiança por existência de arquivo nem guardar privadas/JWT. Independência operacional do witness, rollback conjunto, custódia/rotação das autoridades e compartilhamento entre diários continuam gates.
+
+
+## Preparação online — isolamento de confiança por subject (2026-11-05)
+
+**Regressão final: 397 testes Node aprovados, zero falhas/skips**, incluindo os sete novos, em 2026-11-05. Log temporário: `/tmp/writingroom-subject-isolation-final-20261105.log`. `git diff --check` sem erros. Firefox não reexecutado.
+
+ADR-0039: contrato e sete testes sintéticos de duas contas com dois dispositivos cada, em diretórios/diários/witnesses separados. Recuperação de uma conta preserva as sessões/contextos e o estado da outra; aprovações e bindings cruzados são recusados. Exercitadas recuperações paralelas, reabertura de witnesses, revogação individual, diário de conta errada e falha entre commits isolada por conta. Não altera código de produção, UI alpha.20/studio-19, formatos ou manuscritos.
+
+Baseline atual: **390 testes aprovados**, sem falhas/skips, Node v26.13.0/Linux, log `/tmp/writingroom-baseline-unrestricted-20261105.log`. **Sete testes novos aprovados isoladamente**. Firefox não reexecutado. Publicação anterior confirmada por `ls-remote`: `main` remota e HEAD inicial local em `cea5d943834a92057fe89160bf94e46c51257a07`; documento de retomada corrigido. Alterações desta sessão locais.
+
+**Próximo: fixture HTTPS/OIDC de duas contas com roteamento pelo subject autenticado e recuperação independente**, validando sessões da outra conta, callbacks/provas/operações cruzados e reinício no Firefox. Mapa privado de conta/âncora/domínios e reconciliação precisam ser definidos antes da persistência. Compartilhamento entre diários, independência real do witness e custódia das autoridades permanecem gates; sem E2EE/v4/produção.
+
+
 ## Preparação online — recuperação testemunhada no HTTPS/Firefox (2026-11-04)
 
 **390 testes Node aprovados, sem falhas/skips**, incluindo **7 novos de integração HTTPS**, e **52 verificações Firefox novas de recuperação**. Node `/tmp/writingroom-recovery-https-final-node.log`; isolado `/tmp/writingroom-recovery-https-isolated-node.log`; browser `/tmp/writingroom-browser-k9j45auj/report.json`. As 118 verificações Firefox anteriores não foram reexecutadas nesta etapa; a suíte nova é dedicada à recuperação.

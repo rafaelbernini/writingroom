@@ -1,5 +1,15 @@
 # Matriz requisito → trabalho → evidência
 
+## Retomada do mapa — ADR-0041 (2026-11-05)
+
+`subject-recovery-map.mjs` + `sharing-subject-recovery-map.test.mjs`: 14 testes novos de referências públicas, resolução pelo witness atual, reparação, snapshot/adulteração, paths e processos/SIGKILL nas fronteiras de compromisso. Suíte completa: 419 aprovados, sem falhas/skips. Não integra mapa/HTTPS ou recupera privadas; não promove gates de E2EE, independência de âncoras, rollback do filesystem ou disponibilidade do arquivo compartilhado. Firefox não reexecutado nesta etapa.
+
+
+## Isolamento de recuperação no HTTPS/OIDC — ADR-0039/0040 (2026-11-05)
+
+Contrato de separação por conta: `sharing-subject-isolation.test.mjs` (sete cenários SQLite/sessão). Integração: `sharing-subject-recovery-https.test.mjs` (oito cenários HTTPS, incluindo troca de token em andamento, resultado OIDC de uso único e confirmação perdida) e `verify-sharing-subject-recovery-firefox.py` (58 verificações). Evidência detalhada em PROGRESS e ADR-0040. Não promove os gates de serviço multiusuário, recuperação de privadas, persistência do mapa, independência do witness, E2EE ou autorização entre diários.
+
+
 ## Preparação online — sessão vinculada ao dispositivo (2026-11-03)
 
 Validação desta etapa: **312 testes Node aprovados, sem falhas/skips**, incluindo nove novos de composição, dois HTTPS e um de lock entre processos; **27 verificações Firefox de cookies reexecutadas**. Log `/tmp/writingroom-bound-session-node.log`; relatório `/tmp/writingroom-browser-amxz9i89/report.json`. O ciclo combinado de posse+convites no navegador ainda é a próxima etapa; o teste Firefox desta rodada valida cookies legados. Sem manuscrito privado, identidade real ou mudança da UI.

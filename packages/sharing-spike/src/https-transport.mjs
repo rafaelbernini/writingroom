@@ -81,12 +81,13 @@ export async function startSyntheticHttpsTransport({ authority, identities, dire
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(fixturePort,'127.0.0.1',resolve);});
  origin=`https://127.0.0.1:${server.address().port}`;
  try {
-  if(oidcFixture){const provider=await oidcFixture.createProvider(origin);harness=createOidcFixtureSessionHarness({authority,directory,identities,now,origin,issuer:oidcFixture.issuer,accounts:oidcFixture.accounts,provider,browserResult:true});}
+  if(oidcFixture){const provider=await oidcFixture.createProvider(origin);harness=createOidcFixtureSessionHarness({authority,directory,identities,now,origin,issuer:oidcFixture.issuer,accounts:oidcFixture.accounts,provider,browserResult:true,subjectContexts:oidcFixture.subjectContexts});}
   else harness=directory?createDeviceBoundSessionHarness({authority,identities,directory,now,origin}):createSyntheticSessionHarness({authority,identities,now,origin});
  }catch(error){server.closeAllConnections();server.close();throw error;}
  return Object.freeze({mode:'SYNTHETIC_ONLY',origin,
   // Control-plane test API, deliberately absent from routes and response payloads.
   ...(oidcFixture?{}:{issueSyntheticCode:input=>harness.issueSyntheticCode(input)}),
+  ...(oidcFixture?.subjectContexts?{replaceSubjectContext:(subject,context)=>harness.replaceSubjectContext(subject,context)}:{}),
   close:()=>new Promise((resolve,reject)=>{harness.close?.();server.closeAllConnections();server.close(error=>error?reject(error):resolve());})
  });
 }

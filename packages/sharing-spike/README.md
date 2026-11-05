@@ -148,3 +148,13 @@ python3 scripts/verify-sharing-recovery-firefox.py
 ```
 
 Fixture dedicada de um subject: witness confirmado bloqueia o runtime antigo, ativação privada troca para domínios vazios e login novo exige posse da chave nova. Sete testes HTTPS e 52 verificações Firefox; sem rotas públicas de reconferência/bootstrap. [ADR-0038](../../docs/architecture/adr/0038-witnessed-recovery-https-firefox.md). Não recupera privadas/grants e não resolve rollback conjunto do witness local. Próximo: isolamento de confiança por subject para múltiplas contas/dispositivos; independência operacional segue gate.
+
+## Isolamento por conta e retomada do mapa
+
+A [ADR-0039](../../docs/architecture/adr/0039-subject-trust-isolation.md) prova separação por subject; a [ADR-0040](../../docs/architecture/adr/0040-subject-recovery-https.md) integra duas contas em HTTPS/OIDC sem reiniciar a sessão da conta não recuperada. A [ADR-0041](../../docs/architecture/adr/0041-subject-recovery-map.md) acrescenta um índice isolado de referências públicas, sempre subordinado aos witnesses configurados fora do mapa.
+
+```bash
+node --test --test-isolation=none packages/core/test/sharing-subject-recovery-map.test.mjs
+```
+
+O índice reabre somente o destino confirmado pelo witness. Uma queda sem registrar esse destino bloqueia a conta afetada até reparação privada; não volta ao diretório anterior. Testes de processos/SIGKILL não persistem privadas/JWT e uma sessão retomada ainda exige prova nova. O índice ainda não foi ligado à fixture HTTPS; não resolve perda de privadas, rollback conjunto ou independência operacional das âncoras.

@@ -19,10 +19,12 @@ let authority=await createDurableSyntheticAuthority(journalFile,identities);
 authority.createProject('owner',{id:'book',scenes:[{id:'one',folder:'draft'},{id:'private',folder:'research'}]});
 authority.createProject('other',{id:'otherbook',scenes:[{id:'one',folder:'draft'}]});
 let directory=await createDurableDeviceDirectory(directoryFile,pins),transport,dropOperation=false;
-async function start(fixturePort=0){transport=await startSyntheticHttpsTransport({authority,directory,identities,tls,enableBrowserFixture:true,fixturePort,browserFixtureScript,shouldDropOperationResponse:()=>{const drop=dropOperation;dropOperation=false;return drop;},observeBrowserFixture:e=>{if(observations.length<500)observations.push({server:'rp',...e});},oidcFixture:{issuer:issuer.issuer,accounts:identities.map(subject=>({sub:subject+'-sub',subject})),createProvider:origin=>issuer.configure(origin)}});return {origin:transport.origin,issuer:issuer.issuer};}
+async function start(fixturePort=0){transport=await startSyntheticHttpsTransport({authority,directory,identities,tls,enableBrowserFixture:true,fixturePort,browserFixtureScript,shouldDropOperationResponse:()=>dropOperation,observeBrowserFixture:e=>{if(observations.length<500)observations.push({server:'rp',...e});},oidcFixture:{issuer:issuer.issuer,accounts:identities.map(subject=>({sub:subject+'-sub',subject})),createProvider:origin=>issuer.configure(origin)}});return {origin:transport.origin,issuer:issuer.issuer};}
 process.stdout.write(JSON.stringify(await start())+'\n');
 async function control(c){
+ // Keep the fault armed through transport retries until private control explicitly releases it.
  if(c.action==='drop_operation'){dropOperation=true;return {ok:true};}
+ if(c.action==='resume_operations'){dropOperation=false;return {ok:true};}
  if(c.action==='authorize')return issuer.authorize(c.input);
  if(c.action==='callback')return {url:issuer.callback(c.input)};
  if(c.action==='observations')return observations;

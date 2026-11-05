@@ -132,7 +132,7 @@ body=r'''
  check('browser recipient private key is non-extractable',js('return !window.recipient.privateKey.extractable;'))
  owner_domains=fetch('/operations/context',{},owner_csrf)['body']
  lost_operation=operation('invite',invite,owner_domains);control('drop_operation')
- lost=fetch('/operations/execute',lost_operation,owner_csrf)
+ lost=fetch('/operations/execute',lost_operation,owner_csrf);control('resume_operations')
  check('committed invite can lose HTTPS response',lost.get('blocked') is True)
  recovered=fetch('/operations/reconcile',lost_operation,owner_csrf)
  check('lost invite response reconciles durable receipt',recovered.get('status')==200 and recovered['body']['status']=='committed')
@@ -151,7 +151,8 @@ body=r'''
  editor=crypto('editor');editor_challenge=prove('editor',editor,editor_csrf)
  editor_domains=fetch('/operations/context',{},editor_csrf)['body']
  accept_operation=operation('accept',{'token':token,'explicit':True},editor_domains);control('drop_operation')
- check('committed accept can lose HTTPS response',fetch('/operations/execute',accept_operation,editor_csrf).get('blocked') is True)
+ lost_accept=fetch('/operations/execute',accept_operation,editor_csrf);control('resume_operations')
+ check('committed accept can lose HTTPS response',lost_accept.get('blocked') is True)
  accepted=fetch('/operations/reconcile',accept_operation,editor_csrf);check('proven OIDC recipient accepts scoped invitation',accepted.get('status')==200)
  accepted_retry=fetch('/operations/execute',accept_operation,editor_csrf)
  check('accept retry preserves one grant and receipt',accepted_retry.get('status')==200 and accepted_retry['body']['receipt']['grantId']==accepted['body']['receipt']['grantId'] and accepted_retry['body']['receipt']['receiptId']==accepted['body']['receipt']['receiptId'])

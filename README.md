@@ -58,7 +58,7 @@ Sincronização, colaboração online, login de produção, instaladores desktop
 npm test
 ```
 
-A suíte usa dados sintéticos e diretórios temporários. Os testes de transporte abrem servidores HTTP/HTTPS locais; o ambiente precisa permitir sockets de loopback. A execução mais recente em 4 de novembro de 2026 aprovou **390 testes**, sem falhas ou testes ignorados. Scripts adicionais em `scripts/` verificam fluxos no Firefox e arquivos exportados, com ferramentas específicas descritas na documentação.
+A suíte usa dados sintéticos e diretórios temporários. Os testes de transporte abrem servidores HTTP/HTTPS locais; o ambiente precisa permitir sockets de loopback. A execução mais recente em 5 de novembro de 2026 aprovou **419 testes**, sem falhas ou testes ignorados. Scripts adicionais em `scripts/` verificam fluxos no Firefox e arquivos exportados, com ferramentas específicas descritas na documentação.
 
 | Caminho | Conteúdo |
 | --- | --- |

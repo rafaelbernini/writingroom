@@ -1,38 +1,56 @@
 # WritingRoom — retomar na próxima sessão
 
-## Ponto de retomada prioritário — documentação e GitHub (2026-11-04)
+## Ponto de retomada prioritário — mapa público de destinos
 
-Último pedido atendido: preparar este documento de continuidade e um README de apresentação pública. O README agora apresenta propósito, recursos reais, instalação, dados, limites, testes e contribuição. O conteúdo anterior foi preservado em `docs/development/HISTORICO_README.md`.
+**419 testes Node aprovados, zero falhas/skips**, incluindo **14 novos de mapa/processos**, também aprovados isoladamente. Baseline: 405 aprovados. Node v26.13.0/Linux. Logs `/tmp/writingroom-account-map-baseline.log`, `/tmp/writingroom-map-isolated-final.log` e `/tmp/writingroom-account-map-final.log`. `git diff --check` sem erros. Firefox não reexecutado: as 228 verificações da ADR-0040 são evidência anterior e não cobrem o novo índice.
 
-### Publicação pendente
+ADR-0041: `subject-recovery-map.mjs` persiste somente referências públicas de subject/âncora/epoch/fingerprint/domínios/nomes de arquivos. Witnesses e raiz vêm de configuração privada independente do mapa. Resolver escolhe exatamente os domínios confirmados pelo witness e abre o diretório pelo wrapper testemunhado, sem fallback, scan, bootstrap ou escolha por maior epoch. Candidato registrado antes do compromisso permanece inerte; depois do compromisso pode ser encontrado sem persistir ponteiro ativo nem repetir JWT.
 
-O destino já existe: **https://github.com/rafaelbernini/writingroom.git**, branch `main`. Na última consulta, o remoto tinha apenas `2f05c2f0ae227a51f1a1d072cb10230597400dd9` (commit inicial com licença MIT). O projeto local usa Apache-2.0 em `LICENSE` e `package.json`; o commit preparado publica essa licença local também.
+Testes reais de processo separado e SIGKILL após compromisso do witness, antes/depois do commit do mapa, com/sem destino preparado. Mapa antigo ou localizador ausente bloqueia a conta afetada e preserva a resolução da outra. Reparação privada confere destinos atuais; mapa substituído pode ser reconstruído em arquivo novo sem apagar evidência ou reescrever witnesses. Adulteração com checksum recalculado, arquivos/âncoras cruzados, checkpoint antigo, symlink/traversal, triggers/schema desconhecido e ausência de arquivos são recusados. Sessão nova exige posse nova; privadas/JWT não são persistidos.
 
-O diretório `.git` deste workspace é um placeholder protegido e não funciona como repositório Git. Para preservar o histórico remoto, foi criado um clone de publicação em `/tmp/writingroom-publicacao`. Não tente remover ou substituir o `.git` protegido.
+**Próximo: integrar o índice à fixture HTTPS/OIDC retomável**, reabrindo o controlador com somente configuração/referências públicas, sem privadas editoriais/de reconferência antigas para servir login + nova prova de posse. Cobrir queda após compromisso antes do reconhecimento, destinos ausentes/antigos e preservação dos domínios/recibos da outra conta. O índice ainda não está ligado à fixture HTTPS da ADR-0040.
 
-- Commit preparado: `b876407f19243dbe9cfecda258a6c972e74915a3`, com o código alpha.20 e a documentação anterior a esta atualização.
-- Bundle de contingência: `/tmp/writingroom-publicacao.bundle`.
-- **Nenhum push foi concluído.** HTTPS retornou `Invalid username or token`; SSH retornou `Permission denied (publickey)`. Também foi tentado `--force-with-lease`, com a mesma recusa de autenticação. O problema não é o endereço nem a existência do repositório.
-- O usuário autorizou publicar no repositório existente, inclusive solicitou force. Preserve o histórico e confira o remoto antes de enviar; o commit preparado já descende do commit inicial, portanto não precisa sobrescrever histórico.
-- Os caminhos em `/tmp` são temporários e podem não existir na próxima sessão. Não são cópias permanentes nem prova de publicação.
+Limites: corrupção/ausência do arquivo compartilhado inteiro pode bloquear todas as contas; não há independência operacional do witness, recuperação de privadas, proteção contra rollback conjunto ou dos eventos de um diário com domínio preservado. Sem E2EE/v4, envio, deploy, dependência nova ou mudança da UI alpha.20/studio-19/formatos/manuscritos. Alterações locais, sem novo push.
 
-### Como concluir o envio
+Leia a ADR-0041 e os testes do mapa antes de integrar. As seções abaixo são históricas e seus campos “Próximo” não substituem este ponto.
 
-1. Verifique se `/tmp/writingroom-publicacao` ainda existe. Se necessário, clone novamente o destino em um diretório gravável separado, preservando o histórico remoto.
-2. Copie o README atual, este documento, `docs/development/HISTORICO_README.md` e `.gitignore` do workspace para o clone preparado. Revise o diff e faça um novo commit: essas atualizações ainda não estão em `b876407` nem no bundle anterior.
-3. Se precisar reconstruir a cópia pública, inclua apenas código, documentação, manifests e licença. Exclua manuscritos, manual privado, `writingroom-private/`, `writingroom-projects/`, `writingroom-backups/`, `node_modules/`, bundles gerados, `.env*`, `.aws/`, `.agents/` e `.codex/`. Não copie o `.git` do workspace.
-4. Verifique a autenticação GitHub com acesso de escrita, sem solicitar tokens pelo chat ou expô-los em logs. Uma nova tentativa só resolverá se a credencial ou o acesso tiver mudado.
-5. Confira o estado remoto e execute o push para `main`. Confirme por `git ls-remote` que a branch remota corresponde ao commit enviado antes de declarar a publicação concluída.
+---
 
-### Validação disponível
+## Histórico — HTTPS/OIDC de duas contas
 
-Na preparação da publicação, a suíte foi reexecutada com Node.js 26.13.0: **390 testes aprovados, zero falhas/skips**. Log temporário: `/tmp/writingroom-publicacao-tests-tap.log`. A primeira tentativa no sandbox restrito falhou; a execução com suporte aos sockets locais passou. As mudanças de README/retomada são apenas documentação e não repetem essa validação de código.
+**Regressão final: 405 testes Node aprovados, zero falhas/skips**, incluindo os oito novos. Log `/tmp/writingroom-subject-https-final-node-2.log`. `git diff --check` sem erros.
 
-### Próxima fase de implementação após resolver a publicação
+ADR-0040: fixture de duas contas, com seleção de diretório/diário pela identidade OIDC verificada e sessão opaca. A recuperação troca somente o harness da conta afetada, preservando origem, servidor e sessões/provas/recibos da outra. Callbacks pendentes e trocas de token em andamento são revalidados por contexto/epoch/geração da conta. Campos de seleção, bindings/respostas HPKE, CSRF e domínios cruzados são recusados. Resultado OIDC de Bob pendente continua disponível uma vez após ativar Alice.
 
-A última fase técnica concluída é a **ADR-0038**, recuperação testemunhada em fixture HTTPS/OIDC de uma identidade, com 52 verificações Firefox específicas. Próximo objetivo: contrato e prova sintética de isolamento de confiança por `subject` para múltiplas contas/dispositivos, garantindo que recuperar uma identidade não redefina as demais.
+Oito testes Node novos e **58 verificações Firefox novas** aprovados. Baseline reexecutado: **397 testes sem falhas/skips**, Node v26.13.0/Linux, `/tmp/writingroom-multi-https-baseline.log`. Isolado final: `/tmp/writingroom-subject-https-isolated-final.log`. Firefox novo: `/tmp/writingroom-browser-mb4yls86/report.json`. Regressões Firefox reexecutadas e aprovadas: **52 recuperação + 53 OIDC/operações + 38 posse + 27 cookies** (170 anteriores; 228 verificações com as 58 novas). Relatórios `/tmp/writingroom-browser-pr9cg8tp/report.json`, `/tmp/writingroom-browser-_zxluz5i/report.json`, `/tmp/writingroom-browser-4ilwi0ib/report.json` e `/tmp/writingroom-browser-bscnqwj5/report.json`.
 
-Leia `docs/development/CODEX_CONTINUATION_MASTER.md`, `docs/development/NEXT_SESSION.md`, `docs/development/PROGRESS.md`, ADRs 0037/0038 e os módulos/testes de recuperação antes de implementar. Preserve a UI alpha.20/studio-19 e o conteúdo privado. As seções abaixo são histórico: seus campos “Próximo” antigos não substituem este ponto de retomada.
+Na regressão OIDC, as primeiras execuções oscilaram na injeção de resposta perdida de convite/aceite. A fixture agora mantém a interrupção armada até liberação explícita por pipe, cobrindo retries do transporte; reconciliação/idempotência continuam exigidas. A execução final das 53 verificações passou. Não foram alteradas políticas de autorização ou respostas normais para acomodar o teste.
+
+Mapa conta → âncora/arquivos ainda privado/em memória. Reinício testado reabre bancos e transporte, com controlador/documentos Firefox vivos; não é crash completo nem recuperação de privadas. UI alpha.20/studio-19, formatos autorais e manuscritos preservados. Sem dependência nova, conta real, envio ou deploy. Alterações locais, sem novo push.
+
+**Próximo: contrato e prova sintética de retomada do controlador/mapa após falha**, incluindo compromisso confirmado antes de persistir destino, mapa antigo/substituído e preservação das outras contas. Persistir somente referências públicas conferidas contra o witness; não inferir confiança por existência de arquivo nem guardar privadas/JWT. Independência operacional do witness, rollback conjunto, custódia/rotação das autoridades e compartilhamento entre diários continuam gates.
+
+A publicação anterior foi confirmada no início desta sessão de continuidade (`main` em `cea5d94`). Não houve push das alterações novas. As seções abaixo são histórico e seus campos “Próximo” não substituem este ponto.
+
+---
+
+## Histórico — isolamento por conta (2026-11-05)
+
+A publicação anterior foi confirmada: `git ls-remote` retornou `cea5d943834a92057fe89160bf94e46c51257a07` para `refs/heads/main` em `github.com/rafaelbernini/writingroom`, igual ao HEAD local encontrado no início desta sessão. **Não há envio anterior pendente.** O Git deste workspace funciona e contém o histórico unido; as orientações antigas sobre placeholder e clone de publicação em `/tmp` não se aplicam ao estado atual. As alterações desta sessão ainda são locais.
+
+A configuração SSH padrão do ambiente falhou por permissões em `/etc/ssh/ssh_config.d/20-systemd-ssh-proxy.conf`. A consulta somente de leitura funcionou com `GIT_SSH_COMMAND='ssh -F /dev/null -o BatchMode=yes -o ConnectTimeout=10'` e acesso de rede permitido. Nenhuma credencial foi solicitada ou alterada e nenhum push foi necessário.
+
+### Etapa técnica entregue
+
+ADR-0039 e `packages/core/test/sharing-subject-isolation.test.mjs`: contrato e prova sintética de duas contas, cada uma com diretório, diário e witness próprios e dois dispositivos. Recuperar Alice bloqueia seus dispositivos/sessões antigos e preserva os de Bob. Aprovações/candidatos/bindings cruzados são recusados; recuperações independentes podem confirmar em paralelo. Revogação individual e falha entre commits de uma conta não bloqueiam a recuperação da outra. Não há implementação de roteamento multi-conta no HTTPS neste incremento.
+
+Baseline reexecutado: **390 testes aprovados**, Node v26.13.0, Linux. Sete cenários novos aprovados isoladamente. Os testes completos precisam de sockets/processos locais permitidos; a primeira execução restrita falhou por limitações do sandbox. Log baseline válido: `/tmp/writingroom-baseline-unrestricted-20261105.log`. Regressão final: **397 testes aprovados, zero falhas/skips**, incluindo os sete novos. Log `/tmp/writingroom-subject-isolation-final-20261105.log`. Firefox não reexecutado; UI alpha.20/studio-19 e manuscritos preservados.
+
+### Próxima tarefa
+
+Integrar o contrato da ADR-0039 a fixture HTTPS/OIDC de duas contas, escolhendo a composição somente pela identidade autenticada. Recuperar uma conta deve preservar a origem e as sessões da outra; validar callbacks/provas/operações cruzados e reinício no Firefox. Definir o mapa privado conta → âncora/domínios e reconciliação antes de persistir esse mapa. Compartilhamento entre diários, independência operacional do witness, custódia/rotação da autoridade e recuperação de privadas continuam gates. Sem E2EE/v4 ou conteúdo real liberados.
+
+Ler ADRs 0037–0039 e os módulos/testes de recuperação. As seções seguintes são históricas e seus campos “Próximo” não substituem este ponto.
 
 ---
 
