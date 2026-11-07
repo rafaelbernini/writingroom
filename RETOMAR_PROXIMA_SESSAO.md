@@ -243,23 +243,9 @@ Os requisitos completos de E2EE/serviço remoto e as etapas posteriores continua
 
 Arquivos centrais: `packages/core/src/reviews.mjs`, `review-schema.mjs`, `core.mjs`, `workspace.mjs`, `migration-backup.mjs`, `apps/web/server.mjs`, `app.js`, `index.html` e `style.css`.
 
-## Livro de teste: preservar os originais
+## Manuscritos privados
 
-O autor autorizou o uso privado de **O Grito no Mármore — Rascunho 1**. O DOCX e o modelo-base permanecem intactos. Para testar mutações, restaurar primeiro o backup em biblioteca isolada; não editar o modelo-base e não publicar trechos em fixtures/documentação.
-
-Backup-base privado:
-
-`writingroom-private/o-grito-no-marmore-rascunho1-2yn29ims/O-Grito-no-Marmore-Rascunho1-Modelo-Completo.wroom-backup.json`
-
-Relatórios recentes, sem conteúdo público do manuscrito:
-
-- `writingroom-private/VALIDACAO-ALPHA12-EXTRACAO.json`: 5.934 parágrafos/833.639 caracteres extraídos, original preservado.
-- `writingroom-private/VALIDACAO-ALPHA13-COMPARACAO.json`: 103 comparações em cópia restaurada, sem mutação.
-- `writingroom-private/VALIDACAO-ALPHA18-RODADAS.json`: 48 cenas/1.954.430 bytes, migração verificada, oferta/devolutiva, pendência sem mudar texto, aceite com snapshot e replay após restore sem duplicar; somente cópia restaurada modificada, backup-base intacto.
-- `writingroom-private/VALIDACAO-ALPHA17-ASSINATURAS.json`: 48 cenas/1.954.435 bytes de projeção em cópia restaurada, assinatura/pins sintéticos e recuperação de chave isolada; origem e checksum do backup-base preservados.
-- `writingroom-private/VALIDACAO-ALPHA16-PACOTE.json`: 48 cenas/1.954.433 bytes de projeção, cifrar/arquivo/decifrar/staging/criar cópia/backup/restauração; textos selecionados e checksum do backup-base preservados.
-- `writingroom-private/VALIDACAO-ALPHA15-EDITOR.json`: 78 documentos em cópia restaurada; acompanhamento salvo/reaberto/restaurado, backup de migração verificado, documentos/snapshots e checksum do backup-base preservados.
-- `writingroom-private/VALIDACAO-ALPHA14-REDLINE.json`: proposta, aceite, snapshot e nova restauração em cópia; backup original inalterado.
+Manuscritos, modelos completos e backups de livros são privados e devem permanecer fora do Git. Para testes, use cópias isoladas e nunca publique trechos em fixtures ou documentação.
 
 ## Evidência disponível ao encerrar
 

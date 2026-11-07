@@ -25,3 +25,7 @@ __pycache__/
 /.aws/
 /.codex/
 /.agents/
+
+# Excluir quaisquer copias do manuscrito privado, em qualquer pasta.
+*[Gg][Rr][Ii][Tt][Oo]*[Mm][AaáÁ][Rr][Mm][Oo][Rr][Ee]*
+*[Gg][Rr][Ii][Tt][Oo]*[Mm]*[Rr][Mm][Oo][Rr][Ee]*

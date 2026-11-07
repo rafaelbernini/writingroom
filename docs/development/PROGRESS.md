@@ -239,7 +239,7 @@ Persistência schema 5, registro de autor/papel/base/intervalo/textos/decisão e
 
 Evidência: **205 testes Node sem falhas/skips**, incluindo migração para 5/falha de backup, CAS/conflitos, autoria, rejeição, Unicode, visual e restore. **85 fluxos Firefox amplos + 9 específicos**: seleção/prévia, proposta sem mutar, aceite/snapshot, filtro/rejeição, conflito, visual preservado, ausência na publicação, backup e reload. Capturas de proposta/painel inspecionadas. Artefatos /tmp/writingroom-browser-3szm33hi/ e /tmp/writingroom-browser-ki2dcwrg/.
 
-Caso privado em cópia restaurada de O Grito no Mármore: proposta preservou texto até aceitar; aceite guardou original em snapshot; novo restore remapeou todos os vínculos. Backup original intacto, sem rede/texto público; relatório writingroom-private/VALIDACAO-ALPHA14-REDLINE.json. Não houve edição do manuscrito/modelo-base.
+Caso privado em cópia restaurada de manuscrito privado: proposta preservou texto até aceitar; aceite guardou original em snapshot; novo restore remapeou todos os vínculos. Backup original intacto, sem rede/texto público; relatório writingroom-private/VALIDACAO-ALPHA14-REDLINE.json. Não houve edição do manuscrito/modelo-base.
 
 Limites: 1000 propostas/4 MB, 20 mil caracteres por lado, 30 MB por obra. Sem edição/apagamento de proposta histórica, multiceleção/aceite em lote, rebase, Track Changes Word ou diff visual de marcas. Histórico aceito pode ser superado por edições posteriores. Nome/papel são autodeclarados, não permissões. Próximos: modo Editor local e pacote criptografado; autenticação online/publicação permanecem na fila. ADR-0019.
 
